@@ -1,0 +1,184 @@
+# 🏦 FinTrack Bank — Banking Analytics Pipeline
+
+> A simulated consulting engagement built for DataBridge Consulting — an end-to-end banking analytics pipeline that identifies financially at-risk customers using Python, SQL, and data engineering best practices.
+
+---
+
+## 📋 Project Background
+
+FinTrack Bank is a mid-sized retail bank concerned about rising customer default rates. As the Junior Business Analyst on this engagement, I was tasked with building a data pipeline, analysing customer financial behaviour, and delivering actionable insights to senior management.
+
+---
+
+## 🏗️ Architecture
+
+```
+REST API + Generated Data
+        ↓
+    Extract()
+        ↓
+    Validate()  ← Pydantic schema enforcement
+        ↓
+   Transform()  ← pandas cleaning & reshaping
+        ↓
+     Load()     ← SQLite database (fintrack.db)
+        ↓
+  SQL Analysis  ← 6 business questions
+        ↓
+ Visualizations ← matplotlib charts
+        ↓
+Executive Summary
+```
+
+---
+
+## 📡 Data Sources
+
+| Source | Type | Records | Description |
+|---|---|---|---|
+| JSONPlaceholder `/users` | REST API | 10 | Customer profiles |
+| Generated Transactions | Python | 500 | 6 months of banking transactions |
+
+---
+
+## 🗄️ Database Schema
+
+```
+fintrack.db
+  ├── users         (id, name, username, email, phone, website)
+  └── transactions  (id, userId, amount, type, category, date, balance_after)
+```
+
+**Relationship:** `transactions.userId` → `users.id` (Many-to-One)
+
+---
+
+## ❓ Business Questions Answered
+
+| # | Question | SQL Technique |
+|---|---|---|
+| 1 | Average balance by transaction type | GROUP BY + AVG |
+| 2 | Customers below $500 danger threshold | JOIN + WHERE |
+| 3 | Transaction volume and value by type | GROUP BY + COUNT + SUM |
+| 4 | Most active customers | JOIN + COUNT + ORDER BY |
+| 5 | Monthly transaction trend | strftime + GROUP BY |
+| 6 | Risk flag — customers who spent more than earned | CTE + CASE WHEN + JOIN |
+
+---
+
+## 🚨 Key Findings
+
+```
+4 out of 10 customers flagged as financial risk:
+
+Customer              Earned        Spent         Status
+─────────────────────────────────────────────────────────
+Chelsey Dietrich     $17,176      $25,523      🚨 RISK  ← highest risk
+Glenna Reichert      $20,737      $25,241      🚨 RISK
+Clementine Bauch     $24,315      $26,865      🚨 RISK
+Leanne Graham        $20,835      $21,366      🚨 RISK
+```
+
+**Additional insights:**
+- April was peak spending month at $88,522 — 24% above the lowest month (February)
+- Ervin Howell is the most active customer with 63 transactions
+- Credit transactions ($248,930) outpaced debit ($228,071) overall
+- 17 transactions across 8 customers fell below the $500 danger threshold
+
+---
+
+## 💡 Recommendations to Client
+
+1. **Immediate intervention** — Contact Chelsey Dietrich and Glenna Reichert for financial counselling. Both are significantly overspending their income.
+2. **Seasonal planning** — Prepare for April spending spikes by increasing credit line monitoring during Q2.
+3. **Early warning system** — Automate monthly risk flag reports to catch at-risk customers before they default.
+
+---
+
+## 🛠️ Tech Stack
+
+| Tool | Purpose |
+|---|---|
+| Python 3.12 | Core language |
+| `requests` | REST API calls |
+| `pandas` | Data transformation |
+| `pydantic` | Data validation & schema enforcement |
+| `sqlite3` | Database storage |
+| `matplotlib` | Visualizations |
+| `logging` | Pipeline monitoring |
+| `random` + `datetime` | Transaction data generation |
+| Google Colab | Development environment |
+
+---
+
+## 🚀 How to Run
+
+1. Open `FinTrack_Pipeline.ipynb` in Google Colab
+2. Run all cells in order
+3. The pipeline will automatically:
+   - Pull customer data from API
+   - Generate 500 realistic transactions
+   - Validate every row with Pydantic
+   - Clean and store in `fintrack.db`
+   - Answer all 6 business questions
+   - Generate 4 visualizations
+
+---
+
+## 📊 Visualizations
+
+| Chart | Type | Insight |
+|---|---|---|
+| Average balance by type | Bar chart | Credit vs debit balance comparison |
+| Most active customers | Bar chart | Top 5 by transaction count |
+| Monthly spending trend | Line chart | 6 month transaction volume |
+| Customer risk flags | Styled table | Red/green risk status per customer |
+
+---
+
+## 📁 Project Structure
+
+```
+FinTrack-Banking-Analytics/
+  ├── FinTrack_Pipeline.ipynb   ← main notebook
+  ├── fintrack.db               ← SQLite database (auto generated)
+  ├── requirements.txt          ← dependencies
+  └── README.md                 ← this file
+```
+
+---
+
+## 📦 Requirements
+
+```
+requests==2.31.0
+pandas==2.0.0
+pydantic==2.0.0
+matplotlib==3.7.0
+```
+
+Install with:
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 🧠 What I Learned
+
+- Structuring a consulting-style data engagement end to end
+- Building production-style ETL pipelines with proper error handling
+- Data validation with Pydantic — enforcing schema before loading
+- Advanced SQL — CTEs, multi-table JOINs, CASE WHEN risk logic
+- Translating raw data into executive-level business insights
+- The difference between technical analysis and business communication
+
+---
+
+## 👤 About This Project
+
+Built as part of a self-directed data engineering and analytics learning journey. This project simulates the kind of work a Junior Business Analyst would deliver at a consulting firm serving banking clients.
+
+---
+
+⭐ If you found this useful, feel free to star the repo!
